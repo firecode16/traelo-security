@@ -1,0 +1,10 @@
+[
+	{
+		"api": "http://localhost:8082/api/auth/login",
+		"type": "POST"
+	},
+	{
+		"username": "traelo",
+		"password": "123"
+	}
+]

@@ -1,0 +1,18 @@
+[
+	{
+		"api": "http://localhost:8082/api/auth/signup",
+		"type": "POST"
+	},
+	{
+		"userId": 25437,
+		"username": "traelo",
+		"password": "123",
+		"email": "traelo@gmail.com",
+		"fullName": "nombre usuario",
+		"phone": "8124653458",
+		"roles": [
+			"ROLE_CUSTOMER",
+			"ROLE_BUSINESS"
+		]
+	}
+]
