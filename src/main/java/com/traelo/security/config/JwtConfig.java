@@ -42,7 +42,7 @@ public class JwtConfig {
 		final User user = usuarioRepository.findByUsername(username);
 		Map<String, Object> claims = new HashMap<>();
 
-		claims.put("userid", user.getUserId());
+		claims.put("userId", user.getUserId());
 		claims.put("username", username);
 		claims.put("email", user.getEmail());
 		claims.put("fullName", user.getFullName());
