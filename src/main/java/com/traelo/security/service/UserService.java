@@ -13,6 +13,8 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	int response = 0;
+
 	@Transactional(readOnly = true)
 	public User searchByUsername(String username) {
 		return userRepository.findByUsernameIgnoreCase(username);
@@ -35,5 +37,24 @@ public class UserService {
 			role.getUsers().add(status);
 		}
 		return status;
+	}
+
+	@Transactional
+	public int updateUser(Long userId, User user) {
+		User objUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		objUser.setFullName(user.getFullName());
+		objUser.setEmail(user.getEmail());
+		objUser.setPhone(user.getPhone());
+
+		try {
+			userRepository.save(objUser);
+			response = 1;
+		} catch (Exception e) {
+			e.getLocalizedMessage();
+			response = -1;
+		}
+
+		return response;
 	}
 }

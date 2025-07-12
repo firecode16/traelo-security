@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -127,6 +129,12 @@ public class AuthenticationController {
 		userInfo.put("roles", user.getRoles().stream().map(Role::getRoleName).toList());
 
 		return ResponseEntity.ok(userInfo);
+	}
+
+	@PutMapping("/auth/update/{userId}")
+	private ResponseEntity<?> update(@PathVariable Long userId, @RequestBody User user) {
+		int response = userService.updateUser(userId, user);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 	private String getToken(String username) {
