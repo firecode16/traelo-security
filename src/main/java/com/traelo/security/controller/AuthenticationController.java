@@ -11,12 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.traelo.security.config.JwtConfig;
@@ -33,7 +33,7 @@ import com.traelo.security.service.UserDetailService;
 import com.traelo.security.service.UserService;
 
 @RestController
-@CrossOrigin("*")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 	@Autowired
 	private UserDetailService userDetailService;
@@ -50,7 +50,7 @@ public class AuthenticationController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@PostMapping("/auth/login")
+	@PostMapping("/login")
 	public ResponseEntity<?> sessionLogin(@RequestBody AuthRequest authRequest) {
 		UserDetails userDetails = userDetailService.loadUserByUsername(authRequest.getUsername());
 
@@ -63,7 +63,7 @@ public class AuthenticationController {
 		}
 	}
 
-	@PostMapping("/auth/signup")
+	@PostMapping("/signup")
 	public ResponseEntity<?> register(@RequestBody RegisterUser registerUser) {
 		if (userService.searchByUsernameOrEmail(registerUser.getUsername(), registerUser.getEmail()) != null) {
 			return ResponseEntity.badRequest().body("Username or email is currently in Use");
@@ -103,7 +103,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new AuthResponse(jwt));
 	}
 
-	@PostMapping("/auth/refreshToken")
+	@PostMapping("/refreshToken")
 	public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
 		String token = refreshToken.getToken();
 		String username = jwtConfig.extractUsername(token);
@@ -112,7 +112,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(new RefreshTokenResponse(refreshNewToken));
 	}
 
-	@GetMapping("/auth/userInfo")
+	@GetMapping("/userInfo")
 	private ResponseEntity<?> getUserInfo(Authentication authentication) {
 		String username = authentication.getName();
 		User user = userService.searchByUsername(username);
@@ -131,7 +131,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(userInfo);
 	}
 
-	@PutMapping("/auth/update/{userId}")
+	@PutMapping("/update/{userId}")
 	private ResponseEntity<?> update(@PathVariable Long userId, @RequestBody User user) {
 		int response = userService.updateUser(userId, user);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
