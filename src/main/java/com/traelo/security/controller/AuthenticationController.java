@@ -137,6 +137,11 @@ public class AuthenticationController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
+	@GetMapping("/getDataUser/{userId}")
+	private ResponseEntity<?> getDataUser(@PathVariable Long userId) {
+		return ResponseEntity.ok(userService.findByUserId(userId));
+	}
+	
 	private String getToken(String username) {
 		return jwtConfig.generateToken(username);
 	}

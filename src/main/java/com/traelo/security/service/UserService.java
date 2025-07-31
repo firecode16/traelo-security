@@ -1,5 +1,9 @@
 package com.traelo.security.service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,17 @@ public class UserService {
 	@Transactional(readOnly = true)
 	public User searchByUsernameOrEmail(String username, String email) {
 		return userRepository.findByUsernameIgnoreCaseOrEmailIgnoreCase(username, email);
+	}
+
+	@Transactional(readOnly = true)
+	public Map<String, Object> findByUserId(Long userId) {
+		Optional<User> optUser = userRepository.findByUserId(userId);
+
+		Map<String, Object> mapUser = new HashMap<>();
+		mapUser.put("phone", optUser.get().getPhone());
+		mapUser.put("fullName", optUser.get().getFullName());
+		mapUser.put("email", optUser.get().getEmail());
+		return mapUser;
 	}
 
 	@Transactional
